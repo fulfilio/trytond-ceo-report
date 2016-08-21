@@ -47,11 +47,13 @@ class CEOReport(ReportWebkit):
         )
 
     @classmethod
-    def parse(cls, report, records, data, localcontext):
+    def get_context(cls, records, data):
         Sale = Pool().get('sale.sale')
         ShipmentOut = Pool().get('stock.shipment.out')
         Inventory = Pool().get('stock.inventory')
         Production = Pool().get('production')
+
+        report_context = super(CEOReport, cls).get_context(records, data)
 
         sales = Sale.search([
             ('state', 'in', ['confirmed', 'processing', 'done']),
@@ -78,7 +80,7 @@ class CEOReport(ReportWebkit):
             ('state', '=', 'done'),
         ], count=True)
 
-        localcontext.update({
+        report_context.update({
             'sales': sales,
             'shipments': shipments,
             'productions': productions,
@@ -89,9 +91,7 @@ class CEOReport(ReportWebkit):
             'get_sales_by_salesman_data': cls.get_sales_by_salesman_data,
             'get_sales_by_channel_data': cls.get_sales_by_channel_data
         })
-        return super(CEOReport, cls).parse(
-            report, records, data, localcontext
-        )
+        return report_context
 
     @classmethod
     def get_sales_by_salesman_data(cls, sales):
