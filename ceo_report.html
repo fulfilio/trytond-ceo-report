@@ -229,10 +229,10 @@
             });
           }
           {% if sale_has_salesman %}
-            drawPieChart("#sales_by_salesman_piechart", {{ get_sales_by_salesman_data(sales) }});
+            drawPieChart("#sales_by_salesman_piechart", {{ get_sales_by_salesman_data(sales)|safe }});
           {% endif %}
           {% if sale_has_channel %}
-            drawPieChart("#sales_by_channel_piechart", {{ get_sales_by_channel_data(sales) }});
+            drawPieChart("#sales_by_channel_piechart", {{ get_sales_by_channel_data(sales)|safe }});
           {% endif %}
         </script>
       {% endif %}
